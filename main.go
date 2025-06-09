@@ -45,6 +45,8 @@ func main() {
 		logger.Fatalf("unable to get database connection, error: %s", err)
 	}
 
+	models.AddSystemData(db, cfg.Environment)
+
 	app := config.App{
 		Config: *cfg,
 		DB:     db,

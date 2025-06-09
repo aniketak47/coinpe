@@ -5,6 +5,8 @@ go 1.24.1
 require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/universal-translator v0.18.1
+	github.com/jaevor/go-nanoid v1.4.0
+	github.com/pquerna/otp v1.5.0
 	github.com/sethvargo/go-envconfig v1.3.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/pflag v1.0.6
@@ -13,6 +15,8 @@ require (
 	gorm.io/gorm v1.30.0
 	gorm.io/plugin/dbresolver v1.6.0
 )
+
+require github.com/boombuler/barcode v1.0.1-0.20190219062509-6c824513bacc // indirect
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
@@ -50,7 +54,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/crypto v0.32.0 // indirect
+	golang.org/x/crypto v0.32.0
 	golang.org/x/net v0.33.0 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
