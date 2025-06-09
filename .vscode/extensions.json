@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "jpoissonnier.vscode-styled-components",
+    "redhat.vscode-yaml",
+    "eamodio.gitlens",
+    "editorconfig.editorconfig",
+    "mikestead.dotenv",
+    "ms-azuretools.vscode-docker",
+    "orta.vscode-jest",
+    "syler.sass-indented",
+    "hex-ci.stylelint-plus",
+    "dbaeumer.vscode-eslint",
+    "golang.go",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "ms-vscode-remote.remote-containers"
+  ]
+}
