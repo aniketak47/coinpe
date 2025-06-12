@@ -182,7 +182,7 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		AccessToken:                accessToken.Token,
 		AccessTokenExpiryInSeconds: int32(accessToken.ExpiryInSeconds),
 		VerificationChannel:        "sms",
-		Handle:                     *existingAccount.PhoneNumber,
+		Handle:                     *account.PhoneNumber,
 		GoTo:                       GoToVerifyAccount,
 	})
 
