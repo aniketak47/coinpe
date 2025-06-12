@@ -17,6 +17,7 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		request     = CreateAccountRequest{}
 		errResponse = errorConst.ErrorResponse{}
 		accountRepo = models.InitAccountRepo(b.DB)
+		walletRepo  = models.InitWalletRepo(b.DB)
 	)
 
 	err := c.ShouldBindJSON(&request)
@@ -56,6 +57,7 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 	existingAccount, err := accountRepo.FindOne(tx, request.Email, request.PhoneNumber, "")
 	if err != nil && err != gorm.ErrRecordNotFound {
 		logger.Error("error in getting account | err: ", err)
+		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, errResponse.Generate(
 			errorConst.ErrorInternalError,
 			"error in getting account",
@@ -113,6 +115,7 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 	err = accountRepo.CreateWithTx(tx, &account)
 	if err != nil {
 		logger.Error("error in creating account | err: ", err)
+		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, errResponse.Generate(
 			errorConst.ErrorInternalError,
 			"error in creating account",
@@ -121,12 +124,19 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		return
 	}
 
-	err = tx.Commit().Error
+	// create wallet
+	err = walletRepo.CreateWithTx(tx, &models.Wallet{
+		UserUUID:              account.UUID,
+		Currency:              models.EntityINR,
+		OverdraftLimitInCents: 10000, // initially giving ₹100 as overdraft
+	})
+
 	if err != nil {
-		logger.Error("error in commiting | err: ", err)
+		logger.Error("error in creating wallet | err: ", err)
+		tx.Rollback()
 		c.JSON(http.StatusInternalServerError, errResponse.Generate(
 			errorConst.ErrorInternalError,
-			"error in getting account",
+			"error in creating wallet",
 			errorConst.EmptyInterface,
 		))
 		return
@@ -152,6 +162,17 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, errResponse.Generate(
 			errorConst.ErrorInternalError,
 			"error in creating access token",
+			errorConst.EmptyInterface,
+		))
+		return
+	}
+
+	err = tx.Commit().Error
+	if err != nil {
+		logger.Error("error in commiting | err: ", err)
+		c.JSON(http.StatusInternalServerError, errResponse.Generate(
+			errorConst.ErrorInternalError,
+			"error in getting account",
 			errorConst.EmptyInterface,
 		))
 		return

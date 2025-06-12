@@ -25,3 +25,9 @@ func InitRoleRepo(db *gorm.DB) IRole {
 		db: db,
 	}
 }
+
+func InitWalletRepo(DB *gorm.DB) IWallet {
+	return &walletRepo{
+		db: DB,
+	}
+}

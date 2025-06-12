@@ -57,3 +57,15 @@ type IRole interface {
 	CheckIfPermissionExists(roleID uint64, permissionName PermissionName) (bool, error)
 	GetAllExternalRoles() ([]Role, error)
 }
+
+type IWallet interface {
+	Get(where *Wallet) (*Wallet, error)
+	GetWithTx(tx *gorm.DB, where *Wallet) (*Wallet, error)
+	Create(w *Wallet) error
+	CreateWithTx(tx *gorm.DB, w *Wallet) error
+	Delete(walletID string) error
+	UpdateBalance(tx *gorm.DB, walletID string, totalBalance int) error
+	CanDebit(w *Wallet, amountInCents int) bool
+	UpdateWithTx(tx *gorm.DB, where *Wallet, w *Wallet) error
+	Update(where *Wallet, w *Wallet) error
+}

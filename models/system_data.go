@@ -10,4 +10,5 @@ import (
 func AddSystemData(db *gorm.DB, env constants.AppEnv) {
 	InitPermissionRepo(db).BulkCreate(PermissionsToMigrate)
 	InitRoleRepo(db).BulkCreate(&RolesToMigrate)
+	InitWalletRepo(db).Create(&CoinpeWallet)
 }
