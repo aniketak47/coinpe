@@ -23,6 +23,7 @@ type Config struct {
 	RedisConfiguration RedisConfiguration       `env:",prefix=REDIS_"`
 	FeatureFlags       string                   `env:"FEATURE_FLAGS"`
 	VPCProxyCIDR       string                   `env:"VPC_PROXY_CIDR"`
+	JWTConfiguration   JWTConfiguration
 }
 
 type ServerConfiguration struct {
@@ -34,4 +35,11 @@ type ServerConfiguration struct {
 type RedisConfiguration struct {
 	RedisConnectionAddress string `env:"CONNECTION_ADDRESS"`
 	RedisPassword          string `env:"PASSWORD"`
+}
+
+type JWTConfiguration struct {
+	SecretKey                             string `env:"JWT_SECRET_KEY"`
+	PartialAuthAccessTokenExpiryInSeconds int    `env:"PARTIAL_AUTH_ACCESS_TOKEN_EXPIRY_IN_SECONDS"`
+	FullAuthAccessTokenExpiryInSeconds    int    `env:"FULL_AUTH_ACCESS_TOKEN_EXPIRY_IN_SECONDS"`
+	FullAuthRefreshTokenExpiryInSeconds   int    `env:"FULL_AUTH_REFRESH_TOKEN_EXPIRY_IN_SECONDS"`
 }

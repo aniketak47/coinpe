@@ -5,6 +5,7 @@ go 1.24.1
 require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/universal-translator v0.18.1
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/jaevor/go-nanoid v1.4.0
 	github.com/pquerna/otp v1.5.0
 	github.com/sethvargo/go-envconfig v1.3.0

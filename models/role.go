@@ -8,6 +8,14 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+type RoleID uint64
+
+const (
+	RoleSuperAdmin RoleID = iota + 1
+	RoleAdmin
+	RoleCustomer
+)
+
 type Role struct {
 	ID        uint64         `json:"id" gorm:"primaryKey"`
 	CreatedAt *time.Time     `json:"-"`

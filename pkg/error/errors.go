@@ -29,11 +29,12 @@ func ErrorText(code int) string {
 }
 
 var errorText = map[int]string{
-	ErrorNoRecordsFound:    "No Records Found",
-	ErrorUnauthorized:      "Error unathorized",
-	ErrorInsufficientFunds: "Insufficient Funds",
-	ErrorInternalError:     "Internal Server Error",
-	ErrorForbidden:         "Forbidden",
+	ErrorBadFormat:      "BadFormatError",
+	ErrorBadRequest:     "BadRequest",
+	ErrorBindingRequest: "We're experiencing difficulties binding your request at the moment. Please ensure all required information is provided and try again. If the issue persists, kindly contact our support team for assistance.",
+	ErrorNoRecordsFound: "NoRecordsFound",
+	ErrorForbidden:      "Forbidden",
+	ErrorInternalError:  "InternalServerError",
 }
 
 func GetHttpStatusCodeForError(code int) int {
