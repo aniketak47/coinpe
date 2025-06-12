@@ -3,6 +3,7 @@ package controllers
 import (
 	"coinpe/models"
 	errorConst "coinpe/pkg/error"
+	"coinpe/pkg/jwtauth"
 	"coinpe/pkg/logger"
 	"net/http"
 
@@ -63,8 +64,41 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		return
 	}
 
+	accessTokenExpiryTime := int32(b.Config.JWTConfiguration.PartialAuthAccessTokenExpiryInSeconds)
+
 	if existingAccount != nil && existingAccount.ID != 0 {
-		c.JSON(http.StatusCreated, existingAccount)
+		customClaims := &jwtauth.CustomClaims{
+			Role:        request.Role,
+			AccountUUID: existingAccount.UUID,
+			Email:       existingAccount.Email,
+			PhoneNumber: *existingAccount.PhoneNumber,
+			IsPartial:   true,
+		}
+
+		//create token
+		accessToken, err := b.createToken(&CreateTokenRequest{
+			TokenType:           TokenTypeAccess,
+			ExpiryTimeInSeconds: &accessTokenExpiryTime,
+			CustomClaims:        customClaims,
+		})
+		if err != nil {
+			logger.Error("unable to create access token ", err)
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, errResponse.Generate(
+				errorConst.ErrorInternalError,
+				"error in creating access token",
+				errorConst.EmptyInterface,
+			))
+			return
+		}
+
+		c.JSON(http.StatusOK, AuthenticateResponse{
+			AccessToken:                accessToken.Token,
+			AccessTokenExpiryInSeconds: int32(accessToken.ExpiryInSeconds),
+			VerificationChannel:        "sms",
+			Handle:                     *existingAccount.PhoneNumber,
+			GoTo:                       GoToVerifyAccount,
+		})
 		return
 	}
 
@@ -98,6 +132,37 @@ func (b *BaseController) CreateAccount(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, account)
+	customClaims := &jwtauth.CustomClaims{
+		Role:        request.Role,
+		AccountUUID: account.UUID,
+		Email:       account.Email,
+		PhoneNumber: *account.PhoneNumber,
+		IsPartial:   true,
+	}
+
+	//create token
+	accessToken, err := b.createToken(&CreateTokenRequest{
+		TokenType:           TokenTypeAccess,
+		ExpiryTimeInSeconds: &accessTokenExpiryTime,
+		CustomClaims:        customClaims,
+	})
+	if err != nil {
+		logger.Error("unable to create access token ", err)
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, errResponse.Generate(
+			errorConst.ErrorInternalError,
+			"error in creating access token",
+			errorConst.EmptyInterface,
+		))
+		return
+	}
+
+	c.JSON(http.StatusOK, AuthenticateResponse{
+		AccessToken:                accessToken.Token,
+		AccessTokenExpiryInSeconds: int32(accessToken.ExpiryInSeconds),
+		VerificationChannel:        "sms",
+		Handle:                     *existingAccount.PhoneNumber,
+		GoTo:                       GoToVerifyAccount,
+	})
 
 }
