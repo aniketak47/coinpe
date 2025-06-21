@@ -1,6 +1,9 @@
 package utils
 
-import "os"
+import (
+	"os"
+	"time"
+)
 
 func IsRunningInContainer() bool {
 	if _, err := os.Stat("/.dockerenv"); err != nil {
@@ -18,4 +21,8 @@ func String(s *string) string {
 		return *s
 	}
 	return ""
+}
+
+func TimePTR(t time.Time) *time.Time {
+	return &t
 }

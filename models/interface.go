@@ -69,3 +69,35 @@ type IWallet interface {
 	UpdateWithTx(tx *gorm.DB, where *Wallet, w *Wallet) error
 	Update(where *Wallet, w *Wallet) error
 }
+
+type IChannel interface {
+	GetByID(channelID uint64) (*Channel, error)
+	BulkCreate(channels []Channel) error
+	Create(u *Channel) error
+}
+
+type IProvider interface {
+}
+
+type ITemplate interface {
+}
+
+type INotificationStatus interface {
+	BulkCreate(nStatus []NotificationStatus) error
+}
+
+type INotification interface {
+	GetNotificationByTemplateID(TemplateID uint64) (*Notification, error)
+	GetNotificationWithTx(tx *gorm.DB, where *Notification) (*Notification, error)
+	CreateNotificationWithTx(tx *gorm.DB, u *Notification) error
+	Update(n *Notification, ID uint64) error
+	UpdateWithTx(tx *gorm.DB, n *Notification) error
+	GetByProviderReferenceID(providerReferenceID string) (*Notification, error)
+}
+
+type INotificationUpdate interface {
+	GetNotificationUpdateByNotificationID(tx *gorm.DB, NotificationID uint64) (*[]NotificationUpdate, error)
+	GetNotificationUpdateWithTx(tx *gorm.DB, where *NotificationUpdate) (*NotificationUpdate, error)
+	CreateNotificationUpdate(u *NotificationUpdate) error
+	CreateNotificationUpdateWithTx(tx *gorm.DB, u *NotificationUpdate) error
+}

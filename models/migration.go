@@ -7,6 +7,12 @@ var migrationModels = []interface{}{
 	&Permission{},
 	&Role{},
 	&Wallet{},
+	&Channel{},
+	&Provider{},
+	&Template{},
+	&NotificationStatus{},
+	&Notification{},
+	&NotificationUpdate{},
 }
 
 func GetMigrationModel() []interface{} {

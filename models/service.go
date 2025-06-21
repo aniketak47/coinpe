@@ -26,8 +26,44 @@ func InitRoleRepo(db *gorm.DB) IRole {
 	}
 }
 
-func InitWalletRepo(DB *gorm.DB) IWallet {
+func InitWalletRepo(db *gorm.DB) IWallet {
 	return &walletRepo{
+		db: db,
+	}
+}
+
+func InitChannelRepo(db *gorm.DB) IChannel {
+	return &channelRepo{
+		db: db,
+	}
+}
+
+func InitProviderRepo(db *gorm.DB) IProvider {
+	return &providerRepo{
+		db: db,
+	}
+}
+
+func InitTemplateRepo(db *gorm.DB) ITemplate {
+	return &templateRepo{
+		db: db,
+	}
+}
+
+func InitNotificationStatusRepo(DB *gorm.DB) INotificationStatus {
+	return &notificationStatusRepo{
+		db: DB,
+	}
+}
+
+func InitNotificationRepo(DB *gorm.DB) INotification {
+	return &notificationRepo{
+		db: DB,
+	}
+}
+
+func InitNotificationUpdateRepo(DB *gorm.DB) INotificationUpdate {
+	return &notificationUpdateRepo{
 		db: DB,
 	}
 }

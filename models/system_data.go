@@ -11,4 +11,6 @@ func AddSystemData(db *gorm.DB, env constants.AppEnv) {
 	InitPermissionRepo(db).BulkCreate(PermissionsToMigrate)
 	InitRoleRepo(db).BulkCreate(&RolesToMigrate)
 	InitWalletRepo(db).Create(&CoinpeWallet)
+	InitChannelRepo(db).BulkCreate(ChannelList)
+	InitNotificationStatusRepo(db).BulkCreate(NotificationStatuses)
 }
